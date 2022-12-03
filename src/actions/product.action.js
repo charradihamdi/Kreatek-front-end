@@ -20,23 +20,22 @@ export const getProductsBySlug = (slug) => {
 
 export const getProductDetailsById = (payload) => {
   return async (dispatch) => {
-    // dispatch({ type: productConstants.GET_PRODUCT_DETAILS_BY_ID_REQUEST });
-    // let res;
-    // //try {
-    // const { productId } = payload.params;
-    // res = await axios.get(`/product/${productId}`);
-    // console.log(res);
-    // dispatch({
-    //   type: productConstants.GET_PRODUCT_DETAILS_BY_ID_SUCCESS,
-    //   payload: { productDetails: res.data.product },
-    // });
-    // //}
-    // //  catch (error) {
-    // //   console.log(error);
-    // //   dispatch({
-    // //     type: productConstants.GET_PRODUCT_DETAILS_BY_ID_FAILURE,
-    // //     payload: { error: res.data.error },
-    // //   });
-    // // }
+    dispatch({ type: productConstants.GET_PRODUCT_DETAILS_BY_ID_REQUEST });
+    let res;
+    try {
+      const { productSlug } = payload.params;
+      res = await axios.get(`/product/${productSlug}`);
+      console.log(res);
+      dispatch({
+        type: productConstants.GET_PRODUCT_DETAILS_BY_ID_SUCCESS,
+        payload: { productDetails: res.data.product },
+      });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: productConstants.GET_PRODUCT_DETAILS_BY_ID_FAILURE,
+        payload: { error: res.data.error },
+      });
+    }
   };
 };
