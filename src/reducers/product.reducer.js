@@ -17,10 +17,6 @@ export default (state = initState, action) => {
       state = {
         ...state,
         products: action.payload.products,
-        priceRange: action.payload.priceRange,
-        productsByPrice: {
-          ...action.payload.productsByPrice,
-        },
       };
       break;
     case productConstants.GET_PRODUCT_PAGE_REQUEST:

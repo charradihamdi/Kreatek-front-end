@@ -9,21 +9,6 @@ import PriceDetails from "../../components/PriceDetails";
 import "./style.css";
 import { MaterialButton } from "../../components/MaterialUI";
 
-/**
- * @author
- * @function CartPage
- **/
-
-/*
-Before Login
-Add product to cart
-save in localStorage
-when try to checkout ask for credentials and 
-if logged in then add products to users cart database from localStorage
-
-
-*/
-
 const CartPage = (props) => {
   const cart = useSelector((state) => state.cart);
   const auth = useSelector((state) => state.auth);
@@ -99,14 +84,7 @@ const CartPage = (props) => {
               padding: "10px 0",
               boxSizing: "border-box",
             }}
-          >
-            <div style={{ width: "250px" }}>
-              <MaterialButton
-                title="PLACE ORDER"
-                onClick={() => props.history.push(`/checkout`)}
-              />
-            </div>
-          </div>
+          ></div>
         </Card>
         <PriceDetails
           totalItem={Object.keys(cart.cartItems).reduce(function (qty, key) {

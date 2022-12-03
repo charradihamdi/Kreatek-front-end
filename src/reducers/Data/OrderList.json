@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1",
+    "orders": [
+      {
+        "id": "1",
+        "libelle": "mouse",
+        "prix_ttc": 20,
+        "en_stock": true,
+        "is_gift": true
+      },
+      {
+        "id": "2",
+        "libelle": "laptop",
+        "prix_ttc": 200,
+        "en_stock": false,
+        "is_gift": false
+      },
+      {
+        "id": "3",
+        "libelle": "mobile",
+        "prix_ttc": 600,
+        "en_stock": true,
+        "is_gift": true
+      }
+    ]
+  }
+]

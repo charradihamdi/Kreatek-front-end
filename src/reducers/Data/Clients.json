@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "nom_complet": "mohamed",
+    "nbr_gifts": 5,
+    "remise_defaut": 10,
+    "Gift_nbr": 5
+  },
+  {
+    "id": "2",
+    "nom_complet": "abid",
+    "nbr_gifts": 8,
+    "remise_defaut": 100,
+    "Gift_nbr": 5
+  },
+  {
+    "id": "3",
+    "nom_complet": "hamdi",
+    "nbr_gifts": 1,
+    "remise_defaut": 30
+  }
+]
