@@ -21,7 +21,7 @@ const ProductDetailsPage = (props) => {
 
   useEffect(() => {
     const { productSlug } = props.match.params;
-    console.log("productId", productSlug);
+
     const payload = {
       params: {
         productSlug,
@@ -33,7 +33,7 @@ const ProductDetailsPage = (props) => {
   if (product.length === 0) {
     return null;
   }
-  console.log("product", product.productDetails.en_stock);
+
   return (
     <Layout>
       {/* <div>{product.productDetails.name}</div> */}

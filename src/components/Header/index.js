@@ -18,7 +18,7 @@ import Cart from "../UI/Cart";
  **/
 
 const Header = (props) => {
-  const [loginModal, setLoginModal] = useState(true);
+  const [loginModal, setLoginModal] = useState(false);
   const [signup, setSignup] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -30,6 +30,7 @@ const Header = (props) => {
 
   // state cart value
   const cart = useSelector((state) => state.cart);
+  const token = localStorage.getItem("token");
 
   const userSignup = () => {
     const user = { firstName, lastName, email, password };
@@ -50,6 +51,7 @@ const Header = (props) => {
       userSignup();
     } else {
       dispatch(login({ email, password }));
+      token && setLoginModal(true);
     }
   };
 
@@ -58,14 +60,16 @@ const Header = (props) => {
   };
 
   useEffect(() => {
-    if (auth.authenticate) {
+    if (token) {
       setLoginModal(false);
+    } else {
+      setLoginModal(true);
     }
-  }, [auth.authenticate]);
+  }, [token]);
 
-  // useEffect(() => {
-  //   dispatch(getCartItems());
-  // }, []);
+  useEffect(() => {
+    dispatch(getCartItems());
+  }, []);
 
   const renderLoggedInMenu = () => {
     return (

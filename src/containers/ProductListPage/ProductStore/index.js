@@ -14,7 +14,6 @@ const ProductStore = (props) => {
 
   useEffect(() => {
     const { match } = props;
-    dispatch(getProductsBySlug());
   }, []);
   const products = useSelector((state) => state.product.products);
 

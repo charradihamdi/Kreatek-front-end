@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomePage from "./containers/HomePage";
 import ProductListPage from "./containers/ProductListPage";
 import { useDispatch, useSelector } from "react-redux";
-import { isUserLoggedIn, updateCart } from "./actions";
+import { getProductsBySlug, isUserLoggedIn, updateCart } from "./actions";
 import ProductDetailsPage from "./containers/ProductDetailsPage";
 import CartPage from "./containers/CartPage";
 
@@ -12,16 +12,16 @@ function App() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
-  // useEffect(() => {
-  //   if (!auth.authenticate) {
-  //     dispatch(isUserLoggedIn());
-  //   }
-  // }, [auth.authenticate]);
+  useEffect(() => {
+    if (!auth.authenticate) {
+      dispatch(isUserLoggedIn());
+    }
+  }, [auth.authenticate]);
 
-  // useEffect(() => {
-  //   console.log("App.js - updateCart");
-  //   dispatch(updateCart());
-  // }, [auth.authenticate]);
+  useEffect(() => {
+    dispatch(updateCart());
+    dispatch(getProductsBySlug());
+  }, [auth.authenticate]);
 
   return (
     <div className="App">
