@@ -56,8 +56,16 @@ const ProductStore = (props) => {
             <div className="productInfo">
               <div style={{ margin: "10px 0" }}>{product.libelle}</div>
               <div>
-                <Rating value="4.3" />
-                &nbsp;&nbsp;
+                <Rating
+                  value={
+                    product.is_gift ? (
+                      <>is gifted &nbsp;&nbsp; </>
+                    ) : (
+                      <span style={{ color: "red" }}>not gifted</span>
+                    )
+                  }
+                />
+
                 <span
                   style={{
                     color: "#777",

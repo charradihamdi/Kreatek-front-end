@@ -38,7 +38,7 @@ const CartPage = (props) => {
     const { name, price, img } = cartItems[_id];
     dispatch(addToCart({ _id, name, price, img }, -1));
   };
-  console.log(auth.user.remise_defaut);
+
   const onRemoveCartItem = (_id) => {
     dispatch(removeCartItem({ productId: _id }));
   };
@@ -57,6 +57,15 @@ const CartPage = (props) => {
       </>
     );
   }
+  const pricettc = () => {
+    Object.keys(cart.cartItems).reduce((totalPrice, key) => {
+      const { price, qty } = cart.cartItems[key];
+      products.products.map((item) => {
+        if (key === item._id) cart.cartItems[key].price = item.prix_ttc;
+      });
+      return totalPrice + price * qty;
+    }, 0);
+  };
 
   return (
     <Layout>
@@ -140,22 +149,22 @@ const CartPage = (props) => {
           }, 0)}
           totalPriceAfterReuction={Object.keys(cart.cartItems).reduce(
             (totalPrice, key) => {
+              const resut = 0;
               const { price, qty } = cart.cartItems[key];
               products.products.map((item) => {
                 if (key === item._id) {
                   cart.cartItems[key].price = item.prix_ttc;
-                  totalPrice = item.is_gift
-                    ? totalPrice + price * qty * 0.3
-                    : totalPrice + price * qty - auth.user.remise_defaut;
                   if (
-                    !item.is_gift &&
-                    gitsSelected * giftValue < totalPrice &&
-                    cart.cartItems.length == 4
+                    item.is_gift &&
+                    gitsSelected > 0 &&
+                    totalPrice > gitsSelected * 100
                   ) {
-                    //try
-                    cart.cartItems[5].price =
-                      cart.cartItems[5].price * 0.1 * 0.7 +
-                      (cart.cartItems[5].price * 0.9 - auth.user.remise_defaut);
+                    console.log("result", resut, gitsSelected);
+                    totalPrice = totalPrice + price * qty * 0.3;
+                  } else {
+                    totalPrice =
+                      totalPrice + price * qty - auth.user.remise_defaut;
+                    return totalPrice;
                   }
                 }
               });

@@ -98,7 +98,7 @@ const ProductDetailsPage = (props) => {
         </div>
         <div>
           <div className="productDetails">
-            <p className="productTitle">{product.libelle}</p>
+            <p className="productTitle">{product.productDetails.libelle}</p>
             <div>
               <span className="ratingCount">
                 4.3 <IoIosStar />
