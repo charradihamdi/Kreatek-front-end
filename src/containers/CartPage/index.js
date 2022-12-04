@@ -10,17 +10,18 @@ import "./style.css";
 import { MaterialButton } from "../../components/MaterialUI";
 
 const CartPage = (props) => {
+  const giftValue = 100; //static value
+  const [gitsSelected, setGiftsSelected] = useState(0);
   const cart = useSelector((state) => state.cart);
   const auth = useSelector((state) => state.auth);
   const products = useSelector((state) => state.product);
-
   const [cartItems, setCartItems] = useState(cart.cartItems);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setCartItems(cart.cartItems);
   }, [cart.cartItems]);
-  console.log("cart.cartItems", Object.keys(cartItems));
+
   useEffect(() => {
     if (auth.authenticate) {
       dispatch(getCartItems());
@@ -37,7 +38,7 @@ const CartPage = (props) => {
     const { name, price, img } = cartItems[_id];
     dispatch(addToCart({ _id, name, price, img }, -1));
   };
-
+  console.log(auth.user.remise_defaut);
   const onRemoveCartItem = (_id) => {
     dispatch(removeCartItem({ productId: _id }));
   };
@@ -63,17 +64,44 @@ const CartPage = (props) => {
         <Card
           headerLeft={`My Cart`}
           headerRight={
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "col",
-                border: "1 px solid grey",
-              }}
-            >
-              {" "}
-              <div>{<input type="checkbox" />}</div>
-              <label>Gifts(5gifts)</label>
-            </div>
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "col",
+                  border: "1 px solid grey",
+                }}
+              >
+                <label style={{ color: "#2874F0" }}>
+                  Total gifts Amount:
+                  {auth.user.nbr_gifts * giftValue}DT
+                </label>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "col",
+                  border: "1 px solid grey",
+                }}
+              >
+                <div>
+                  {
+                    <input
+                      type="range"
+                      min="0"
+                      max={auth.user.nbr_gifts}
+                      value={gitsSelected}
+                      onChange={(e) => {
+                        setGiftsSelected(e.target.value);
+                      }}
+                    />
+                  }
+                </div>
+                <label style={{ color: "#2874F0" }}>
+                  ({gitsSelected}gift used)
+                </label>
+              </div>
+            </>
           }
           style={{ width: "calc(100% - 400px)", overflow: "hidden" }}
         >
@@ -104,8 +132,6 @@ const CartPage = (props) => {
             return qty + cart.cartItems[key].qty;
           }, 0)}
           totalPrice={Object.keys(cart.cartItems).reduce((totalPrice, key) => {
-            console.log("key", key);
-
             const { price, qty } = cart.cartItems[key];
             products.products.map((item) => {
               if (key === item._id) cart.cartItems[key].price = item.prix_ttc;
@@ -114,13 +140,26 @@ const CartPage = (props) => {
           }, 0)}
           totalPriceAfterReuction={Object.keys(cart.cartItems).reduce(
             (totalPrice, key) => {
-              console.log("key", key);
-
               const { price, qty } = cart.cartItems[key];
               products.products.map((item) => {
-                if (key === item._id) cart.cartItems[key].price = item.prix_ttc;
+                if (key === item._id) {
+                  cart.cartItems[key].price = item.prix_ttc;
+                  totalPrice = item.is_gift
+                    ? totalPrice + price * qty * 0.3
+                    : totalPrice + price * qty - auth.user.remise_defaut;
+                  if (
+                    !item.is_gift &&
+                    gitsSelected * giftValue < totalPrice &&
+                    cart.cartItems.length == 4
+                  ) {
+                    //try
+                    cart.cartItems[5].price =
+                      cart.cartItems[5].price * 0.1 * 0.7 +
+                      (cart.cartItems[5].price * 0.9 - auth.user.remise_defaut);
+                  }
+                }
               });
-              return (totalPrice + price * qty) * 0.3;
+              return totalPrice;
             },
             0
           )}

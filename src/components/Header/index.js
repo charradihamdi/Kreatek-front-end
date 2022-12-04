@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-
+import logo from "./logo.png";
 import { IoIosArrowDown, IoIosCart, IoIosSearch } from "react-icons/io";
 import {
   Modal,
@@ -166,15 +166,16 @@ const Header = (props) => {
       <div className="subHeader">
         {/* Logo  */}
         <div className="logo">
-          <a href="">
-            <div className="logoimage" alt="">
-              kreatek
-            </div>
+          <a href="/">
+            <img
+              src={logo}
+              className="logoimage"
+              width="14px"
+              height="40px"
+              style={{ borderRadius: "50%" }}
+            />
           </a>
         </div>
-        {/* logo ends here */}
-
-        {/* search component */}
         <div
           style={{
             padding: "0 10px",
@@ -199,6 +200,11 @@ const Header = (props) => {
         {/* right side menu */}
         <div className="rightMenu">
           {auth.authenticate ? renderLoggedInMenu() : renderNonLoggedInMenu()}
+          <div>
+            <a href={`/products`} className="cart">
+              <span style={{ margin: "0 10px" }}>products</span>
+            </a>
+          </div>
           <div>
             <a href={`/cart`} className="cart">
               <Cart count={Object.keys(cart.cartItems).length} />
