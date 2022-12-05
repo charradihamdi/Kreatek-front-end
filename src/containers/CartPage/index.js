@@ -11,7 +11,8 @@ import { MaterialButton } from "../../components/MaterialUI";
 
 const CartPage = (props) => {
   const giftValue = 100; //static value
-  const [gitsSelected, setGiftsSelected] = useState(0);
+  const [gitsSelected, setGiftsSelected] = useState(1);
+  const [result, setResult] = useState(0);
   const cart = useSelector((state) => state.cart);
   const auth = useSelector((state) => state.auth);
   const products = useSelector((state) => state.product);
@@ -149,22 +150,43 @@ const CartPage = (props) => {
           }, 0)}
           totalPriceAfterReuction={Object.keys(cart.cartItems).reduce(
             (totalPrice, key) => {
-              const resut = 0;
               const { price, qty } = cart.cartItems[key];
-              products.products.map((item) => {
+
+              products.products.map((item, i) => {
                 if (key === item._id) {
                   cart.cartItems[key].price = item.prix_ttc;
+                  totalPrice = totalPrice + price * qty;
+                  console.log("pricettc", totalPrice);
                   if (
                     item.is_gift &&
                     gitsSelected > 0 &&
-                    totalPrice > gitsSelected * 100
+                    totalPrice < gitsSelected * 100
                   ) {
-                    console.log("result", resut, gitsSelected);
-                    totalPrice = totalPrice + price * qty * 0.3;
-                  } else {
-                    totalPrice =
-                      totalPrice + price * qty - auth.user.remise_defaut;
-                    return totalPrice;
+                    totalPrice = totalPrice * 0.3;
+                  } else if (item.is_gift == 0) {
+                    if (
+                      i == Object.keys(cart.cartItems).length &&
+                      totalPrice > gitsSelected * 100
+                      //&&
+                      // totalPrice - cart.cartItems[key].price <
+                      //   gitsSelected * 100
+                    ) {
+                      totalPrice = totalPrice - cart.cartItems[key].price;
+                      let result = Math.abs(gitsSelected * 100 - totalPrice);
+                      console.log(
+                        "totalPrice",
+                        totalPrice,
+                        "-",
+                        result,
+                        "-",
+                        item.prix_ttc,
+                        auth.user.remise_defaut
+                      );
+                      totalPrice =
+                        totalPrice +
+                        result * 0.3 +
+                        (item.prix_ttc - result - auth.user.remise_defaut);
+                    }
                   }
                 }
               });
