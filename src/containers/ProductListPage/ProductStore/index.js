@@ -18,24 +18,19 @@ const ProductStore = (props) => {
   const products = useSelector((state) => state.product.products);
 
   return (
-    <Card
-      headerRight={
-        <MaterialButton
-          title={"VIEW ALL"}
-          style={{
-            width: "96px",
-          }}
-          bgColor="#2874f0"
-          fontSize="12px"
-        />
-      }
-      style={{
-        width: "calc(100% - 40px)",
-        margin: "20px",
-      }}
+    <div
+      className="row"
+      style={{ display: "flex", maxWidth: "100%", background: "white" }}
     >
-      <div style={{ display: "flex" }}>
-        {products.map((product) => (
+      {products.map((product) => (
+        <div
+          className="col-3"
+          style={{
+            border: "1px solid #77778D",
+            margin: "8px 2px 2px 2px",
+            borderRadius: "8%",
+          }}
+        >
           <Link
             to={`/${product._id}`}
             style={{
@@ -79,9 +74,9 @@ const ProductStore = (props) => {
               <Price value={product.prix_ttc} />
             </div>
           </Link>
-        ))}
-      </div>
-    </Card>
+        </div>
+      ))}
+    </div>
   );
 };
 
